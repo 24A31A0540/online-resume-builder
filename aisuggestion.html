@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Suggestions | resume.studio</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PDF.js for PDF parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.2/mammoth.browser.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #F9F7F5 0%, #F0EFED 100%);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .module-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Module Card Styles - resume.studio theme */
+        .ai-module-card {
+            background: #FFFFFF;
+            border-radius: 32px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(58, 77, 140, 0.08);
+            border: 1px solid #EDF0F3;
+            transition: all 0.3s ease;
+        }
+
+        .ai-module-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 48px rgba(58, 77, 140, 0.12);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #EDF0F3;
+        }
+
+        .module-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #E9EEFF 0%, #E2F0EC 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #3A4D8C;
+            transition: all 0.3s;
+        }
+
+        .ai-module-card:hover .module-icon {
+            transform: scale(1.05);
+        }
+
+        .module-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2C3A4B;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .module-subtitle {
+            color: #5D6E7F;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        /* File Upload Area */
+        .file-upload-area {
+            border: 2px dashed #E2E6EA;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #F9F7F5;
+            margin-bottom: 1.5rem;
+        }
+
+        .file-upload-area:hover {
+            border-color: #3A4D8C;
+            background: #E9EEFF;
+            transform: translateY(-2px);
+        }
+
+        .file-upload-area i {
+            font-size: 3rem;
+            color: #3A4D8C;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-area p {
+            color: #5D6E7F;
+            font-size: 0.9rem;
+        }
+
+        .file-info {
+            background: #E9EEFF;
+            border-radius: 12px;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #2C3A4B;
+        }
+
+        .file-info i {
+            cursor: pointer;
+            color: #C47A5D;
+            transition: color 0.3s;
+        }
+
+        .file-info i:hover {
+            color: #3A4D8C;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2C3A4B;
+            margin-bottom: 0.5rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #EDF0F3;
+            border-radius: 16px;
+            font-family: 'Inter', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            resize: vertical;
+            background: #FFFFFF;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3A4D8C;
+            box-shadow: 0 0 0 3px rgba(58, 77, 140, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3A4D8C 0%, #4A8B7A 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(58, 77, 140, 0.3);
+        }
+
+        /* Real-time indicator */
+        .real-time-badge {
+            background: #E2F0EC;
+            border-radius: 40px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.7rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: #4A8B7A;
+            margin-bottom: 1rem;
+        }
+
+        .real-time-badge i {
+            font-size: 0.6rem;
+        }
+
+        /* Suggestions List */
+        .suggestions-list {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .suggestion-card {
+            background: #F9F7F5;
+            border-left: 4px solid #3A4D8C;
+            padding: 1.25rem;
+            border-radius: 12px;
+            transition: all 0.3s;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .suggestion-card:hover {
+            background: #E9EEFF;
+            transform: translateX(5px);
+        }
+
+        .suggestion-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #3A4D8C;
+        }
+
+        .suggestion-desc {
+            color: #5D6E7F;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .warning-text {
+            text-align: center;
+            color: #8C9AA8;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #F9F7F5;
+            border-radius: 12px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #EDF0F3;
+            border-top-color: #3A4D8C;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .success-badge {
+            color: #4A8B7A;
+        }
+
+        hr {
+            margin: 1.5rem 0;
+            border: 0;
+            height: 1px;
+            background: #EDF0F3;
+        }
+
+        /* Scrollbar */
+        .suggestions-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .suggestions-list::-webkit-scrollbar-track {
+            background: #EDF0F3;
+            border-radius: 3px;
+        }
+
+        .suggestions-list::-webkit-scrollbar-thumb {
+            background: #3A4D8C;
+            border-radius: 3px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .module-title {
+                font-size: 1.4rem;
+            }
+            .module-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="module-container">
+        <div class="ai-module-card">
+            <div class="module-header">
+                <div class="module-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div>
+                    <div class="module-title">AI Resume Suggestions</div>
+                    <div class="module-subtitle">Real-time intelligent recommendations to improve your resume</div>
+                </div>
+            </div>
+
+            <!-- Real-time indicator -->
+            <div class="real-time-badge">
+                <i class="fas fa-sync-alt"></i>
+                <span>Real-time analysis active</span>
+            </div>
+
+            <!-- File Upload Area -->
+            <div class="file-upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Click or drag to upload resume (PDF, DOCX, TXT)</p>
+                <input type="file" id="fileInput" accept=".pdf,.docx,.txt" style="display: none;">
+            </div>
+
+            <!-- Or Divider -->
+            <div style="text-align: center; margin: 1rem 0; color: #8C9AA8;">
+                <span>— OR —</span>
+            </div>
+
+            <!-- Text Input -->
+            <div class="form-group">
+                <label><i class="fas fa-file-alt"></i> Paste Resume Content</label>
+                <textarea id="resumeText" rows="6" placeholder="Paste your resume text here... (Real-time suggestions will appear as you type)"></textarea>
+            </div>
+
+            <button class="btn-primary" id="getSuggestionsBtn">
+                <i class="fas fa-magic"></i> Get AI Suggestions
+            </button>
+
+            <div id="suggestionsContainer">
+                <div class="warning-text">
+                    <i class="fas fa-info-circle"></i> Upload a resume or paste content to get real-time AI suggestions
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // File parsing functions
+        function parsePDF(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const typedarray = new Uint8Array(e.target.result);
+                pdfjsLib.getDocument(typedarray).promise.then(function(pdf) {
+                    let fullText = '';
+                    let pages = [];
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        pages.push(pdf.getPage(i));
+                    }
+                    Promise.all(pages).then(function(pages) {
+                        let textPromises = pages.map(page => page.getTextContent());
+                        Promise.all(textPromises).then(function(textContents) {
+                            textContents.forEach(textContent => {
+                                textContent.items.forEach(item => {
+                                    fullText += item.str + ' ';
+                                });
+                            });
+                            callback(fullText);
+                        });
+                    });
+                }).catch(function(error) {
+                    callback('Error parsing PDF: ' + error.message);
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function parseDOCX(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const arrayBuffer = e.target.result;
+                mammoth.extractRawText({ arrayBuffer: arrayBuffer })
+                    .then(function(result) {
+                        callback(result.value);
+                    })
+                    .catch(function(error) {
+                        callback('Error parsing DOCX: ' + error.message);
+                    });
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function parseTXT(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                callback(e.target.result);
+            };
+            reader.readAsText(file);
+        }
+
+        // Handle file upload
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const resumeText = document.getElementById('resumeText');
+        let realtimeTimeout;
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'warning-text';
+                loadingDiv.innerHTML = '<span class="loading"></span> Processing file...';
+                uploadArea.parentNode.insertBefore(loadingDiv, uploadArea.nextSibling);
+
+                if (fileExtension === 'pdf') {
+                    parsePDF(file, (text) => {
+                        resumeText.value = text;
+                        loadingDiv.remove();
+                        showSuccessMessage('PDF file uploaded successfully!');
+                        // Trigger real-time analysis
+                        triggerRealtimeAnalysis();
+                    });
+                } else if (fileExtension === 'docx') {
+                    parseDOCX(file, (text) => {
+                        resumeText.value = text;
+                        loadingDiv.remove();
+                        showSuccessMessage('DOCX file uploaded successfully!');
+                        triggerRealtimeAnalysis();
+                    });
+                } else if (fileExtension === 'txt') {
+                    parseTXT(file, (text) => {
+                        resumeText.value = text;
+                        loadingDiv.remove();
+                        showSuccessMessage('TXT file uploaded successfully!');
+                        triggerRealtimeAnalysis();
+                    });
+                } else {
+                    loadingDiv.remove();
+                    alert('Unsupported file format. Please upload PDF, DOCX, or TXT files.');
+                }
+            }
+        });
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#3A4D8C';
+            uploadArea.style.background = '#E9EEFF';
+        });
+        
+        uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#E2E6EA';
+            uploadArea.style.background = '#F9F7F5';
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#E2E6EA';
+            uploadArea.style.background = '#F9F7F5';
+            if (e.dataTransfer.files.length > 0) {
+                const file = e.dataTransfer.files[0];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'warning-text';
+                loadingDiv.innerHTML = '<span class="loading"></span> Processing file...';
+                uploadArea.parentNode.insertBefore(loadingDiv, uploadArea.nextSibling);
+
+                if (fileExtension === 'pdf') {
+                    parsePDF(file, (text) => {
+                        resumeText.value = text;
+                        loadingDiv.remove();
+                        showSuccessMessage('PDF file uploaded successfully!');
+                        triggerRealtimeAnalysis();
+                    });
+                } else if (fileExtension === 'docx') {
+                    parseDOCX(file, (text) => {
+                        resumeText.value = text;
+                        loadingDiv.remove();
+                        showSuccessMessage('DOCX file uploaded successfully!');
+                        triggerRealtimeAnalysis();
+                    });
+                } else if (fileExtension === 'txt') {
+                    parseTXT(file, (text) => {
+                        resumeText.value = text;
+                        loadingDiv.remove();
+                        showSuccessMessage('TXT file uploaded successfully!');
+                        triggerRealtimeAnalysis();
+                    });
+                } else {
+                    loadingDiv.remove();
+                    alert('Unsupported file format. Please upload PDF, DOCX, or TXT files.');
+                }
+            }
+        });
+
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'warning-text';
+            successDiv.style.color = '#4A8B7A';
+            successDiv.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            uploadArea.parentNode.insertBefore(successDiv, uploadArea.nextSibling);
+            setTimeout(() => successDiv.remove(), 3000);
+        }
+
+        // AI Suggestion Generation
+        const getSuggestionsBtn = document.getElementById('getSuggestionsBtn');
+        const suggestionsContainer = document.getElementById('suggestionsContainer');
+
+        function generateAISuggestions(resumeText) {
+            if (!resumeText.trim()) {
+                return [{
+                    title: "⚠️ No Content Detected",
+                    description: "Please upload a resume file or paste your resume content to receive personalized AI suggestions."
+                }];
+            }
+
+            const lowerText = resumeText.toLowerCase();
+            const suggestions = [];
+
+            // 1. Action Verbs Check
+            const hasActionVerbs = /(achieved|spearheaded|engineered|optimized|launched|accelerated|drove|led|implemented|created|developed|managed|increased|reduced|improved)/i.test(resumeText);
+            if (!hasActionVerbs) {
+                suggestions.push({
+                    title: "💪 Add Strong Action Verbs",
+                    description: "Replace passive phrases with powerful verbs like 'Spearheaded', 'Engineered', 'Optimized', 'Orchestrated' to show impact and leadership."
+                });
+            } else {
+                suggestions.push({
+                    title: "✅ Strong Action Verbs Present",
+                    description: "Your resume uses impactful action verbs. Continue to quantify outcomes for maximum effect."
+                });
+            }
+
+            // 2. Quantifiable Achievements
+            const hasNumbers = /\d+%|\d+\s*percent|\d+\s*dollars|\d+\s*increase|\d+\s*reduction|\d+\s*teams?|\d+\s*people|\$\d+|\d+\s*projects/i.test(resumeText);
+            if (!hasNumbers) {
+                suggestions.push({
+                    title: "📊 Quantify Your Achievements",
+                    description: "Add metrics to your accomplishments: 'Increased sales by 35%', 'Managed team of 12', 'Reduced costs by $50K'. Numbers add credibility and impact."
+                });
+            } else {
+                suggestions.push({
+                    title: "📈 Good Use of Metrics",
+                    description: "You've included quantifiable results. Highlight them prominently at the beginning of bullet points."
+                });
+            }
+
+            // 3. Professional Summary
+            if (!lowerText.includes('summary') && !lowerText.includes('profile') && !lowerText.includes('about')) {
+                suggestions.push({
+                    title: "📝 Add a Professional Summary",
+                    description: "Start your resume with 2-3 lines summarizing your expertise, years of experience, key skills, and top achievements."
+                });
+            } else {
+                suggestions.push({
+                    title: "✨ Polish Your Summary",
+                    description: "Make your summary results-driven: highlight your unique value proposition and a standout accomplishment."
+                });
+            }
+
+            // 4. Skills Detection
+            const modernSkills = ['python', 'javascript', 'react', 'sql', 'project management', 'agile', 'scrum', 'data analysis', 'cloud', 'aws', 'azure', 'communication', 'leadership', 'excel', 'tableau'];
+            const foundSkills = modernSkills.filter(skill => lowerText.includes(skill));
+            if (foundSkills.length < 3) {
+                suggestions.push({
+                    title: "🧠 Add In-Demand Skills",
+                    description: "Consider adding relevant skills: Python, Data Analysis, Agile, Project Management, Cloud Technologies, and Leadership."
+                });
+            } else {
+                suggestions.push({
+                    title: "🏆 Strong Skill Set",
+                    description: `Great! You have relevant skills: ${foundSkills.slice(0, 4).join(', ')}. Continue adding niche keywords.`
+                });
+            }
+
+            // 5. Bullet Points
+            const bulletCount = (resumeText.match(/[•\-\*]\s/g) || []).length;
+            if (bulletCount < 5) {
+                suggestions.push({
+                    title: "📄 Use Bullet Points",
+                    description: "Format your experience using bullet points. Each bullet should start with a strong action verb and highlight achievements."
+                });
+            } else {
+                suggestions.push({
+                    title: "✍️ Optimize Bullet Points",
+                    description: "Use STAR method (Situation, Task, Action, Result) for key accomplishments. Keep bullets concise (1-2 lines)."
+                });
+            }
+
+            // 6. Length Check
+            const wordCount = resumeText.split(' ').length;
+            if (wordCount < 150) {
+                suggestions.push({
+                    title: "📏 Expand Your Content",
+                    description: "Your resume seems brief. Add more detail about key achievements and responsibilities in each role."
+                });
+            } else if (wordCount > 600) {
+                suggestions.push({
+                    title: "✂️ Consider Condensing",
+                    description: "Your resume is lengthy. Aim for 1-2 pages, focusing on the most relevant experiences from the last 10-15 years."
+                });
+            }
+
+            return suggestions;
+        }
+
+        function renderAISuggestions() {
+            const text = resumeText.value;
+            const suggestionsList = generateAISuggestions(text);
+            
+            let html = `<div class="suggestions-list">`;
+            suggestionsList.forEach((sugg, index) => {
+                html += `
+                    <div class="suggestion-card" style="animation-delay: ${index * 0.05}s">
+                        <div class="suggestion-title">
+                            <i class="fas fa-lightbulb"></i> ${sugg.title}
+                        </div>
+                        <div class="suggestion-desc">${sugg.description}</div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            
+            suggestionsContainer.innerHTML = html;
+        }
+
+        // Real-time analysis function
+        function triggerRealtimeAnalysis() {
+            if (realtimeTimeout) clearTimeout(realtimeTimeout);
+            
+            if (resumeText.value.trim()) {
+                // Show loading indicator in suggestions container
+                suggestionsContainer.innerHTML = `
+                    <div class="warning-text">
+                        <span class="loading"></span> Analyzing in real-time...
+                    </div>
+                `;
+                
+                realtimeTimeout = setTimeout(() => {
+                    renderAISuggestions();
+                }, 500);
+            } else if (resumeText.value.trim() === '') {
+                suggestionsContainer.innerHTML = `
+                    <div class="warning-text">
+                        <i class="fas fa-info-circle"></i> Start typing or upload a resume to see real-time AI suggestions
+                    </div>
+                `;
+            }
+        }
+
+        // Real-time input event listener
+        resumeText.addEventListener('input', () => {
+            triggerRealtimeAnalysis();
+        });
+
+        // Manual button click
+        getSuggestionsBtn.addEventListener('click', () => {
+            if (!resumeText.value.trim()) {
+                suggestionsContainer.innerHTML = `
+                    <div class="warning-text">
+                        <i class="fas fa-exclamation-triangle"></i> Please upload a resume or paste content first
+                    </div>
+                `;
+                return;
+            }
+            
+            renderAISuggestions();
+        });
+
+        // Demo data
+      //  const demoText = `Product Manager with 8+ years of experience in SaaS and enterprise software. Led product launches increasing revenue by 45%. Managed cross-    //functional teams of 12 engineers. Skilled in Agile, Product Strategy, and Data Analysis.`;
+        setTimeout(() => {
+            if (!resumeText.value.trim()) {
+                resumeText.value = demoText;
+                triggerRealtimeAnalysis();
+            }
+        }, 500);
+    </script>
+</body>
+</html>

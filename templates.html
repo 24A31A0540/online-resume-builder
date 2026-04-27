@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Studio Pro | Unique Template Designs</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3A4D8C;
+            --primary-light: #5B6FAD;
+            --primary-soft: #E9EEFF;
+            --secondary: #4A8B7A;
+            --secondary-light: #E2F0EC;
+            --accent: #C47A5D;
+            --accent-light: #F7E6DE;
+            --bg: #F9F7F5;
+            --card: #FFFFFF;
+            --text: #2C3A4B;
+            --text-light: #5D6E7F;
+            --text-lighter: #8C9AA8;
+            --border: #E2E6EA;
+            --border-light: #EDF0F3;
+            
+            --shadow-sm: 0 2px 8px rgba(58, 77, 140, 0.05);
+            --shadow-md: 0 4px 12px rgba(58, 77, 140, 0.08);
+            --shadow-lg: 0 8px 24px rgba(58, 77, 140, 0.12);
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        .templates-header {
+            padding: 3rem 0 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(58, 77, 140, 0.02) 0%, rgba(74, 139, 122, 0.02) 100%);
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            background: var(--accent-light);
+            border-radius: 40px;
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Layout */
+        .builder-layout {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        /* Customization Panel */
+        .customization-panel {
+            background: var(--card);
+            border-radius: 28px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            position: sticky;
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+
+        .customization-panel::-webkit-scrollbar { width: 6px; }
+        .customization-panel::-webkit-scrollbar-track { background: var(--border-light); border-radius: 3px; }
+        .customization-panel::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .panel-header i { font-size: 1.5rem; color: var(--primary); }
+        .panel-header h3 { font-size: 1.3rem; color: var(--text); }
+
+        .form-section { margin-bottom: 1.5rem; }
+        .form-section-title { font-size: 0.9rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-light); margin-bottom: 0.3rem; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            background: var(--bg);
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(58, 77, 140, 0.1);
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+        /* Dynamic Entries */
+        .experience-entry, .education-entry {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: var(--bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+        }
+        .entry-header { display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.8rem; font-weight: 600; color: var(--primary); }
+        .delete-btn { background: none; border: none; color: var(--accent); cursor: pointer; }
+        .add-btn { background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.5rem; }
+
+        /* Color & Font Options */
+        .color-picker-group { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem; }
+        .color-option { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: var(--transition); border: 2px solid transparent; }
+        .color-option:hover { transform: scale(1.1); }
+        .color-option.active { border-color: var(--text); transform: scale(1.1); }
+        .font-option { padding: 0.5rem; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; text-align: center; font-size: 0.85rem; background: var(--bg); }
+        .font-option:hover, .font-option.active { border-color: var(--primary); background: var(--primary-soft); }
+
+        /* Download Button */
+        .download-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .download-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+        /* Preview Area */
+        .preview-area {
+            background: var(--card);
+            border-radius: 28px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .preview-header {
+            background: var(--bg);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .preview-content { padding: 2rem; overflow-y: auto; background: white; min-height: 600px; }
+
+        /* Template Cards Grid */
+        .templates-grid-section { padding: 4rem 0; background: var(--bg); }
+        .category-filter { display: flex; justify-content: center; gap: 1rem; margin: 2rem 0 3rem; flex-wrap: wrap; }
+        .filter-btn {
+            padding: 0.6rem 1.5rem;
+            background: transparent;
+            border: 1.5px solid var(--border);
+            border-radius: 40px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .filter-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+        .filter-btn.active { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border-color: transparent; color: white; }
+
+        .templates-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
+        .template-card {
+            background: var(--card);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .template-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+        .template-card.selected { border: 2px solid var(--primary); }
+        .template-preview { height: 200px; padding: 1.5rem; position: relative; overflow: hidden; }
+        .template-info { padding: 1.5rem; border-top: 1px solid var(--border-light); }
+        .template-name { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .template-meta { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-light); }
+        .template-actions { display: flex; gap: 0.75rem; }
+        .template-btn {
+            flex: 1;
+            padding: 0.6rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .template-btn.primary { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border-color: transparent; color: white; }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--card);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+            border-left: 4px solid var(--secondary);
+        }
+        .toast.show { transform: translateX(0); }
+
+        @media (max-width: 1024px) { .builder-layout { grid-template-columns: 1fr; } .customization-panel { position: relative; top: 0; max-height: none; } }
+        @media (max-width: 768px) { .container { padding: 0 1rem; } .form-row { grid-template-columns: 1fr; } .templates-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="templates-header">
+        <div class="container">
+            <div class="section-tag">12 Unique Template Designs</div>
+            <h1 class="section-title">Each Template Has Its Own<br>Unique Structure & Layout</h1>
+            <p class="section-subtitle">Switch between templates to see completely different resume structures</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="builder-layout">
+            <div class="customization-panel">
+                <div class="panel-header"><i class="fas fa-sliders-h"></i><h3>Customize Your Resume</h3></div>
+                <div class="form-section">
+                    <div class="form-section-title"><i class="fas fa-user-circle"></i><span>Personal Information</span></div>
+                    <div class="form-group"><label>Full Name</label><input type="text" id="fullName" value="Sarah Johnson"></div>
+                    <div class="form-group"><label>Professional Title</label><input type="text" id="jobTitle" value="Senior Product Manager"></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Email</label><input type="email" id="email" value="sarah.johnson@email.com"></div>
+                        <div class="form-group"><label>Phone</label><input type="tel" id="phone" value="+1 (123) 456-7890"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Location</label><input type="text" id="location" value="San Francisco, CA"></div>
+                        <div class="form-group"><label>LinkedIn</label><input type="text" id="linkedin" value="linkedin.com/in/sarahjohnson"></div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="form-section-title"><i class="fas fa-align-left"></i><span>Professional Summary</span></div>
+                    <div class="form-group"><textarea id="summary" rows="4">Results-driven Product Manager with 8+ years of experience in SaaS and enterprise software. Proven track record of leading cross-functional teams to deliver innovative products that drive revenue growth. Expert in product strategy, agile methodologies, and data-driven decision making.</textarea></div>
+                </div>
+                <div class="form-section">
+                    <div class="form-section-title"><i class="fas fa-briefcase"></i><span>Work Experience</span>
+                        <button class="add-btn" onclick="addExperience()"><i class="fas fa-plus-circle"></i> Add</button>
+                    </div>
+                    <div id="experienceContainer"></div>
+                </div>
+                <div class="form-section">
+                    <div class="form-section-title"><i class="fas fa-graduation-cap"></i><span>Education</span>
+                        <button class="add-btn" onclick="addEducation()"><i class="fas fa-plus-circle"></i> Add</button>
+                    </div>
+                    <div id="educationContainer"></div>
+                </div>
+                <div class="form-section">
+                    <div class="form-section-title"><i class="fas fa-code"></i><span>Skills</span></div>
+                    <div class="form-group"><input type="text" id="skills" value="Product Strategy, Agile, Data Analysis, Leadership, Go-to-Market, User Research"></div>
+                </div>
+                <div class="form-section">
+                    <div class="form-section-title"><i class="fas fa-palette"></i><span>Design Settings</span></div>
+                    <div class="form-group"><label>Accent Color</label>
+                        <div class="color-picker-group">
+                            <div class="color-option" style="background: #3A4D8C;" data-color="#3A4D8C"></div>
+                            <div class="color-option" style="background: #4A8B7A;" data-color="#4A8B7A"></div>
+                            <div class="color-option" style="background: #C47A5D;" data-color="#C47A5D"></div>
+                            <div class="color-option" style="background: #5B6FAD;" data-color="#5B6FAD"></div>
+                            <div class="color-option" style="background: #E67E22;" data-color="#E67E22"></div>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Font Style</label>
+                        <div class="form-row">
+                            <div class="font-option" data-font="'Inter', sans-serif">Modern</div>
+                            <div class="font-option" data-font="'Playfair Display', serif">Classic</div>
+                            <div class="font-option" data-font="'Poppins', sans-serif">Professional</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" id="downloadBtn"><i class="fas fa-download"></i> Download as PDF</button>
+            </div>
+
+            <div class="preview-area">
+                <div class="preview-header">
+                    <h4><i class="fas fa-eye"></i> Live Preview</h4>
+                    <span class="template-badge-small" id="templateName" style="background: var(--primary-soft); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem;">Modern Tech</span>
+                </div>
+                <div class="preview-content" id="previewContent">
+                    <div id="resumePreview"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="templates-grid-section">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 class="section-title">Choose Your Template</h2>
+                <p class="section-subtitle">Each template has a completely unique structure and layout</p>
+            </div>
+            <div class="category-filter">
+                <button class="filter-btn active" data-category="all">All Templates</button>
+                <button class="filter-btn" data-category="modern">Modern</button>
+                <button class="filter-btn" data-category="executive">Executive</button>
+                <button class="filter-btn" data-category="creative">Creative</button>
+                <button class="filter-btn" data-category="minimal">Minimal</button>
+            </div>
+            <div class="templates-grid" id="templatesGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        // Template Data with Unique Designs
+        const templates = [
+            { id: 1, name: "Modern Tech", category: "modern", style: "modern", desc: "Clean tech layout with skill tags", color: "#3A4D8C" },
+            { id: 2, name: "Executive Elite", category: "executive", style: "executive", desc: "Sidebar layout for leadership", color: "#2C3A4B" },
+            { id: 3, name: "Creative Canvas", category: "creative", style: "creative", desc: "Bold artistic design", color: "#C47A5D" },
+            { id: 4, name: "Minimal Pure", category: "minimal", style: "minimal", desc: "Clean and simple", color: "#4A8B7A" },
+            { id: 5, name: "Two Column Pro", category: "modern", style: "twocolumn", desc: "Modern two-column layout", color: "#5B6FAD" },
+            { id: 6, name: "Timeline Style", category: "creative", style: "timeline", desc: "Chronological timeline", color: "#E67E22" },
+            { id: 7, name: "Card Layout", category: "modern", style: "card", desc: "Card-based experience", color: "#16A085" },
+            { id: 8, name: "Classic Elegant", category: "executive", style: "classic", desc: "Traditional elegant design", color: "#C47A5D" },
+            { id: 9, name: "Bold Header", category: "creative", style: "boldheader", desc: "Large prominent header", color: "#3A4D8C" }
+        ];
+
+        let currentTemplate = templates[0];
+        let currentAccentColor = "#3A4D8C";
+        let currentFont = "'Inter', sans-serif";
+        let experiences = [];
+        let educations = [];
+
+        function initExperiences() {
+            experiences = [
+                { title: "Senior Product Manager", company: "TechCorp Inc.", location: "San Francisco, CA", date: "2022 - Present", desc: "Led product strategy resulting in 45% revenue growth. Managed team of 12 engineers. Launched 3 major features." },
+                { title: "Product Manager", company: "InnovateLabs", location: "Austin, TX", date: "2019 - 2022", desc: "Launched 3 successful products with 500K+ users. Reduced time-to-market by 30%. Received Innovator Award." }
+            ];
+        }
+
+        function initEducations() {
+            educations = [
+                { degree: "MBA, Product Management", school: "Stanford University", location: "Stanford, CA", date: "2017 - 2019", desc: "Graduated with Honors. Specialized in Product Strategy." },
+                { degree: "B.S. Computer Science", school: "UC Berkeley", location: "Berkeley, CA", date: "2013 - 2017", desc: "Dean's List. Minor in Business Administration." }
+            ];
+        }
+
+        function renderExperienceFields() {
+            const container = document.getElementById('experienceContainer');
+            container.innerHTML = experiences.map((exp, idx) => `
+                <div class="experience-entry">
+                    <div class="entry-header"><span>Experience ${idx + 1}</span><button class="delete-btn" onclick="removeExperience(${idx})"><i class="fas fa-trash-alt"></i></button></div>
+                    <input type="text" value="${escapeHtml(exp.title)}" placeholder="Job Title" onchange="updateExperience(${idx}, 'title', this.value)">
+                    <input type="text" value="${escapeHtml(exp.company)}" placeholder="Company" onchange="updateExperience(${idx}, 'company', this.value)" style="margin-top: 0.5rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem;">
+                        <input type="text" value="${escapeHtml(exp.location)}" placeholder="Location" onchange="updateExperience(${idx}, 'location', this.value)">
+                        <input type="text" value="${escapeHtml(exp.date)}" placeholder="Date" onchange="updateExperience(${idx}, 'date', this.value)">
+                    </div>
+                    <textarea placeholder="Description" onchange="updateExperience(${idx}, 'desc', this.value)" style="margin-top: 0.5rem; width: 100%; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border);" rows="2">${escapeHtml(exp.desc)}</textarea>
+                </div>
+            `).join('');
+        }
+
+        function renderEducationFields() {
+            const container = document.getElementById('educationContainer');
+            container.innerHTML = educations.map((edu, idx) => `
+                <div class="education-entry">
+                    <div class="entry-header"><span>Education ${idx + 1}</span><button class="delete-btn" onclick="removeEducation(${idx})"><i class="fas fa-trash-alt"></i></button></div>
+                    <input type="text" value="${escapeHtml(edu.degree)}" placeholder="Degree" onchange="updateEducation(${idx}, 'degree', this.value)">
+                    <input type="text" value="${escapeHtml(edu.school)}" placeholder="School" onchange="updateEducation(${idx}, 'school', this.value)" style="margin-top: 0.5rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem;">
+                        <input type="text" value="${escapeHtml(edu.location)}" placeholder="Location" onchange="updateEducation(${idx}, 'location', this.value)">
+                        <input type="text" value="${escapeHtml(edu.date)}" placeholder="Date" onchange="updateEducation(${idx}, 'date', this.value)">
+                    </div>
+                    <textarea placeholder="Description" onchange="updateEducation(${idx}, 'desc', this.value)" style="margin-top: 0.5rem; width: 100%; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border);" rows="2">${escapeHtml(edu.desc)}</textarea>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+
+        function addExperience() { experiences.push({ title: "", company: "", location: "", date: "", desc: "" }); renderExperienceFields(); renderResumePreview(); }
+        function removeExperience(i) { experiences.splice(i, 1); renderExperienceFields(); renderResumePreview(); }
+        function updateExperience(i, f, v) { experiences[i][f] = v; renderResumePreview(); }
+        function addEducation() { educations.push({ degree: "", school: "", location: "", date: "", desc: "" }); renderEducationFields(); renderResumePreview(); }
+        function removeEducation(i) { educations.splice(i, 1); renderEducationFields(); renderResumePreview(); }
+        function updateEducation(i, f, v) { educations[i][f] = v; renderResumePreview(); }
+
+        function getResumeData() {
+            return {
+                name: document.getElementById('fullName').value || "Your Name",
+                title: document.getElementById('jobTitle').value || "Professional Title",
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value,
+                linkedin: document.getElementById('linkedin').value,
+                summary: document.getElementById('summary').value,
+                skills: document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s),
+                experiences, educations,
+                accentColor: currentAccentColor,
+                font: currentFont
+            };
+        }
+
+        // UNIQUE TEMPLATE STRUCTURES - Each with completely different layout
+        function renderTemplateModern(data) {
+            return `
+                <div style="font-family: ${data.font}; max-width: 100%;">
+                    <div style="text-align: center; border-bottom: 3px solid ${data.accentColor}; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                        <h1 style="font-size: 2rem; color: ${data.accentColor}; margin-bottom: 0.25rem;">${escapeHtml(data.name)}</h1>
+                        <p style="font-size: 1rem; color: ${data.accentColor};">${escapeHtml(data.title)}</p>
+                        <div style="display: flex; justify-content: center; gap: 1rem; font-size: 0.8rem; margin-top: 0.5rem;">
+                            <span>📧 ${escapeHtml(data.email)}</span> <span>📞 ${escapeHtml(data.phone)}</span> <span>📍 ${escapeHtml(data.location)}</span>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;"><h3 style="color: ${data.accentColor}; border-left: 4px solid ${data.accentColor}; padding-left: 0.75rem;">Professional Summary</h3><p style="margin-top: 0.5rem; line-height: 1.6;">${escapeHtml(data.summary)}</p></div>
+                    <div style="margin-bottom: 1.5rem;"><h3 style="color: ${data.accentColor}; border-left: 4px solid ${data.accentColor}; padding-left: 0.75rem;">Work Experience</h3>${data.experiences.map(exp => `<div style="margin-top: 1rem;"><h4>${escapeHtml(exp.title)}</h4><p style="color: ${data.accentColor}; font-size: 0.85rem;">${escapeHtml(exp.company)} | ${escapeHtml(exp.date)}</p><p>${escapeHtml(exp.desc)}</p></div>`).join('')}</div>
+                    <div style="margin-bottom: 1.5rem;"><h3 style="color: ${data.accentColor}; border-left: 4px solid ${data.accentColor}; padding-left: 0.75rem;">Education</h3>${data.educations.map(edu => `<div style="margin-top: 1rem;"><h4>${escapeHtml(edu.degree)}</h4><p style="color: ${data.accentColor};">${escapeHtml(edu.school)} | ${escapeHtml(edu.date)}</p><p>${escapeHtml(edu.desc)}</p></div>`).join('')}</div>
+                    <div><h3 style="color: ${data.accentColor}; border-left: 4px solid ${data.accentColor}; padding-left: 0.75rem;">Skills</h3><div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">${data.skills.map(s => `<span style="background: ${data.accentColor}15; color: ${data.accentColor}; padding: 0.25rem 0.75rem; border-radius: 20px;">${escapeHtml(s)}</span>`).join('')}</div></div>
+                </div>
+            `;
+        }
+
+        function renderTemplateExecutive(data) {
+            return `
+                <div style="font-family: ${data.font}; display: flex; gap: 1.5rem;">
+                    <div style="width: 33%; background: ${data.accentColor}; color: white; padding: 1.5rem; border-radius: 12px;">
+                        <h2 style="font-size: 1.5rem;">${escapeHtml(data.name)}</h2>
+                        <p style="margin-top: 0.5rem;">${escapeHtml(data.title)}</p>
+                        <hr style="margin: 1rem 0; border-color: rgba(255,255,255,0.3);">
+                        <p><i class="fas fa-envelope"></i> ${escapeHtml(data.email)}</p>
+                        <p><i class="fas fa-phone"></i> ${escapeHtml(data.phone)}</p>
+                        <p><i class="fas fa-map-marker"></i> ${escapeHtml(data.location)}</p>
+                        <hr style="margin: 1rem 0;"><h3>Skills</h3><div style="margin-top: 0.5rem;">${data.skills.map(s => `<span style="display: inline-block; background: rgba(255,255,255,0.2); padding: 0.25rem 0.5rem; border-radius: 4px; margin: 0.25rem;">${escapeHtml(s)}</span>`).join('')}</div>
+                    </div>
+                    <div style="width: 67%;"><div><h3 style="color: ${data.accentColor};">Professional Summary</h3><p>${escapeHtml(data.summary)}</p></div>
+                    <div style="margin-top: 1rem;"><h3 style="color: ${data.accentColor};">Experience</h3>${data.experiences.map(exp => `<div style="margin-top: 1rem;"><h4>${escapeHtml(exp.title)}</h4><p style="color: ${data.accentColor};">${escapeHtml(exp.company)} | ${escapeHtml(exp.date)}</p><p>${escapeHtml(exp.desc)}</p></div>`).join('')}</div>
+                    <div style="margin-top: 1rem;"><h3 style="color: ${data.accentColor};">Education</h3>${data.educations.map(edu => `<div><h4>${escapeHtml(edu.degree)}</h4><p>${escapeHtml(edu.school)} (${escapeHtml(edu.date)})</p></div>`).join('')}</div></div>
+                </div>
+            `;
+        }
+
+        function renderTemplateCreative(data) {
+            return `
+                <div style="font-family: ${data.font}; background: linear-gradient(135deg, ${data.accentColor}08, white); padding: 2rem; border-radius: 20px;">
+                    <div style="text-align: center; background: white; padding: 1.5rem; border-radius: 60% 40% 50% 50% / 40% 30% 70% 60%; margin-bottom: 1.5rem;">
+                        <h1 style="font-size: 2.2rem; background: linear-gradient(135deg, ${data.accentColor}, #f093fb); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${escapeHtml(data.name)}</h1>
+                        <p style="font-size: 1.1rem;">${escapeHtml(data.title)}</p>
+                        <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 0.5rem;">${escapeHtml(data.email)} | ${escapeHtml(data.phone)} | ${escapeHtml(data.location)}</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div><h3 style="color: ${data.accentColor}; font-size: 1.2rem;">✨ About Me</h3><p>${escapeHtml(data.summary)}</p>
+                        <h3 style="color: ${data.accentColor}; margin-top: 1rem;">🎨 Skills</h3><div>${data.skills.map(s => `<span style="display: inline-block; background: ${data.accentColor}20; padding: 0.25rem 0.75rem; border-radius: 20px; margin: 0.25rem;">✨ ${escapeHtml(s)}</span>`).join('')}</div></div>
+                        <div><h3 style="color: ${data.accentColor};">💼 Experience</h3>${data.experiences.map(exp => `<div style="margin-bottom: 1rem;"><h4>🎯 ${escapeHtml(exp.title)}</h4><p style="color: ${data.accentColor};">${escapeHtml(exp.company)} • ${escapeHtml(exp.date)}</p><p>${escapeHtml(exp.desc)}</p></div>`).join('')}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTemplateMinimal(data) {
+            return `
+                <div style="font-family: ${data.font}; max-width: 100%;">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <h1 style="font-size: 2rem; font-weight: 300; letter-spacing: -1px;">${escapeHtml(data.name)}</h1>
+                        <p style="font-size: 0.9rem;">${escapeHtml(data.title)}</p>
+                        <div style="font-size: 0.75rem; margin-top: 0.5rem;">${escapeHtml(data.email)} | ${escapeHtml(data.phone)} | ${escapeHtml(data.location)}</div>
+                    </div>
+                    <div style="border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding: 1rem 0; margin-bottom: 1rem;"><p>${escapeHtml(data.summary)}</p></div>
+                    <div><h3 style="font-size: 0.9rem; font-weight: 600;">EXPERIENCE</h3>${data.experiences.map(exp => `<div style="margin: 1rem 0;"><div style="display: flex; justify-content: space-between;"><strong>${escapeHtml(exp.title)}</strong><span>${escapeHtml(exp.date)}</span></div><div style="color: ${data.accentColor};">${escapeHtml(exp.company)}</div><p style="font-size: 0.85rem;">${escapeHtml(exp.desc)}</p></div>`).join('')}</div>
+                    <div><h3 style="font-size: 0.9rem; font-weight: 600;">EDUCATION</h3>${data.educations.map(edu => `<div style="margin: 0.5rem 0;"><strong>${escapeHtml(edu.degree)}</strong><br>${escapeHtml(edu.school)} (${escapeHtml(edu.date)})</div>`).join('')}</div>
+                    <div style="margin-top: 1rem;"><h3 style="font-size: 0.9rem; font-weight: 600;">SKILLS</h3><div>${data.skills.map(s => `<span style="display: inline-block; margin-right: 0.5rem;">• ${escapeHtml(s)}</span>`).join('')}</div></div>
+                </div>
+            `;
+        }
+
+        function renderTemplateTwoColumn(data) {
+            return `
+                <div style="font-family: ${data.font}; display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem;">
+                    <div style="background: ${data.accentColor}10; padding: 1rem; border-radius: 12px;">
+                        <h3 style="color: ${data.accentColor};">Contact</h3>
+                        <p>📧 ${escapeHtml(data.email)}<br>📞 ${escapeHtml(data.phone)}<br>📍 ${escapeHtml(data.location)}<br>🔗 ${escapeHtml(data.linkedin)}</p>
+                        <h3 style="color: ${data.accentColor}; margin-top: 1rem;">Skills</h3>
+                        ${data.skills.map(s => `<span style="display: block; margin: 0.25rem 0;">▹ ${escapeHtml(s)}</span>`).join('')}
+                        <h3 style="color: ${data.accentColor}; margin-top: 1rem;">Education</h3>
+                        ${data.educations.map(edu => `<div><strong>${escapeHtml(edu.degree)}</strong><br>${escapeHtml(edu.school)}<br>${escapeHtml(edu.date)}</div>`).join('')}
+                    </div>
+                    <div><h1 style="font-size: 1.8rem; color: ${data.accentColor};">${escapeHtml(data.name)}</h1><p style="font-size: 1rem;">${escapeHtml(data.title)}</p>
+                    <div style="margin-top: 1rem;"><h3 style="color: ${data.accentColor};">Profile</h3><p>${escapeHtml(data.summary)}</p></div>
+                    <div style="margin-top: 1rem;"><h3 style="color: ${data.accentColor};">Experience</h3>${data.experiences.map(exp => `<div><strong>${escapeHtml(exp.title)}</strong><br><span style="color: ${data.accentColor};">${escapeHtml(exp.company)} | ${escapeHtml(exp.date)}</span><p>${escapeHtml(exp.desc)}</p></div>`).join('')}</div></div>
+                </div>
+            `;
+        }
+
+        function renderTemplateTimeline(data) {
+            return `
+                <div style="font-family: ${data.font};">
+                    <div style="text-align: center; margin-bottom: 2rem;"><h1 style="font-size: 2rem;">${escapeHtml(data.name)}</h1><p>${escapeHtml(data.title)}</p><p style="font-size: 0.8rem;">${escapeHtml(data.email)} | ${escapeHtml(data.phone)}</p></div>
+                    <div style="margin-bottom: 1.5rem;"><p>${escapeHtml(data.summary)}</p></div>
+                    <div><h3 style="color: ${data.accentColor}; border-left: 3px solid ${data.accentColor}; padding-left: 0.5rem;">Career Timeline</h3>
+                    <div style="position: relative; padding-left: 2rem;">${data.experiences.map((exp, i) => `<div style="position: relative; margin-bottom: 1.5rem;"><div style="position: absolute; left: -1.5rem; width: 12px; height: 12px; background: ${data.accentColor}; border-radius: 50%; top: 0.5rem;"></div><div style="border-left: 2px solid ${data.accentColor}20; padding-left: 1rem;"><strong>${escapeHtml(exp.title)}</strong><br><span style="color: ${data.accentColor};">${escapeHtml(exp.company)} (${escapeHtml(exp.date)})</span><p>${escapeHtml(exp.desc)}</p></div></div>`).join('')}</div></div>
+                    <div style="margin-top: 1rem;"><h3>Skills</h3><div>${data.skills.map(s => `<span style="display: inline-block; background: ${data.accentColor}10; padding: 0.25rem 0.5rem; margin: 0.25rem;">${escapeHtml(s)}</span>`).join('')}</div></div>
+                </div>
+            `;
+        }
+
+        function renderTemplateCard(data) {
+            return `
+                <div style="font-family: ${data.font};">
+                    <div style="background: ${data.accentColor}; color: white; padding: 1.5rem; border-radius: 20px; text-align: center; margin-bottom: 1.5rem;">
+                        <h1>${escapeHtml(data.name)}</h1>
+                        <p>${escapeHtml(data.title)}</p>
+                        <div style="margin-top: 0.5rem;">${escapeHtml(data.email)} | ${escapeHtml(data.phone)}</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                        <div style="background: ${data.accentColor}05; padding: 1rem; border-radius: 12px;"><h3 style="color: ${data.accentColor};">Summary</h3><p>${escapeHtml(data.summary)}</p></div>
+                        <div style="background: ${data.accentColor}05; padding: 1rem; border-radius: 12px;"><h3 style="color: ${data.accentColor};">Skills</h3><div>${data.skills.map(s => `<span>🏷️ ${escapeHtml(s)}</span><br>`).join('')}</div></div>
+                        <div style="grid-column: span 2; background: ${data.accentColor}05; padding: 1rem; border-radius: 12px;"><h3 style="color: ${data.accentColor};">Experience</h3>${data.experiences.map(exp => `<div style="margin-top: 0.5rem;"><strong>${escapeHtml(exp.title)}</strong> @ ${escapeHtml(exp.company)}<br><span style="font-size: 0.8rem;">${escapeHtml(exp.date)}</span><p>${escapeHtml(exp.desc)}</p></div>`).join('')}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTemplateClassic(data) {
+            return `
+                <div style="font-family: 'Playfair Display', serif; max-width: 100%;">
+                    <div style="text-align: center; border-bottom: 2px solid ${data.accentColor}; padding-bottom: 1rem;">
+                        <h1 style="font-size: 2rem;">${escapeHtml(data.name)}</h1>
+                        <p><em>${escapeHtml(data.title)}</em></p>
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 1.5rem; margin: 1rem 0; font-size: 0.8rem;">${escapeHtml(data.email)} | ${escapeHtml(data.phone)} | ${escapeHtml(data.location)}</div>
+                    <div style="margin: 1rem 0;"><p>${escapeHtml(data.summary)}</p></div>
+                    <div><h3 style="color: ${data.accentColor};">PROFESSIONAL EXPERIENCE</h3>${data.experiences.map(exp => `<div style="margin: 1rem 0;"><div style="display: flex; justify-content: space-between;"><strong>${escapeHtml(exp.title)}</strong><span>${escapeHtml(exp.date)}</span></div><div><em>${escapeHtml(exp.company)}</em></div><p>${escapeHtml(exp.desc)}</p></div>`).join('')}</div>
+                    <div><h3 style="color: ${data.accentColor};">EDUCATION</h3>${data.educations.map(edu => `<div><strong>${escapeHtml(edu.degree)}</strong><br>${escapeHtml(edu.school)} (${escapeHtml(edu.date)})</div>`).join('')}</div>
+                </div>
+            `;
+        }
+
+        function renderTemplateBoldHeader(data) {
+            return `
+                <div style="font-family: ${data.font};">
+                    <div style="background: ${data.accentColor}; padding: 2rem; color: white;">
+                        <h1 style="font-size: 2.5rem;">${escapeHtml(data.name)}</h1>
+                        <p style="font-size: 1.2rem;">${escapeHtml(data.title)}</p>
+                        <div style="margin-top: 1rem;">${escapeHtml(data.email)} • ${escapeHtml(data.phone)} • ${escapeHtml(data.location)}</div>
+                    </div>
+                    <div style="padding: 1.5rem 0;"><h3>About Me</h3><p>${escapeHtml(data.summary)}</p></div>
+                    <div><h3>Core Competencies</h3><div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">${data.skills.map(s => `<span style="background: ${data.accentColor}10; padding: 0.5rem 1rem; border-radius: 30px;">${escapeHtml(s)}</span>`).join('')}</div></div>
+                    <div style="margin-top: 1.5rem;"><h3>Work History</h3>${data.experiences.map(exp => `<div style="margin: 1rem 0;"><strong>${escapeHtml(exp.title)}</strong> at ${escapeHtml(exp.company)}<br><span style="color: ${data.accentColor};">${escapeHtml(exp.date)}</span><p>${escapeHtml(exp.desc)}</p></div>`).join('')}</div>
+                </div>
+            `;
+        }
+
+        function renderResumePreview() {
+            const data = getResumeData();
+            let html = '';
+            
+            switch(currentTemplate.style) {
+                case 'modern': html = renderTemplateModern(data); break;
+                case 'executive': html = renderTemplateExecutive(data); break;
+                case 'creative': html = renderTemplateCreative(data); break;
+                case 'minimal': html = renderTemplateMinimal(data); break;
+                case 'twocolumn': html = renderTemplateTwoColumn(data); break;
+                case 'timeline': html = renderTemplateTimeline(data); break;
+                case 'card': html = renderTemplateCard(data); break;
+                case 'classic': html = renderTemplateClassic(data); break;
+                case 'boldheader': html = renderTemplateBoldHeader(data); break;
+                default: html = renderTemplateModern(data);
+            }
+            
+            document.getElementById('resumePreview').innerHTML = html;
+            document.getElementById('templateName').innerHTML = currentTemplate.name;
+        }
+
+        function applyTemplate(template) {
+            currentTemplate = template;
+            document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+            document.querySelector(`.template-card[data-id='${template.id}']`).classList.add('selected');
+            renderResumePreview();
+            showToast(`${template.name} template applied!`);
+        }
+
+        function renderTemplates() {
+            const activeCat = document.querySelector('.filter-btn.active').getAttribute('data-category');
+            const filtered = activeCat === 'all' ? templates : templates.filter(t => t.category === activeCat);
+            const grid = document.getElementById('templatesGrid');
+            grid.innerHTML = filtered.map(t => `
+                <div class="template-card" data-id="${t.id}" onclick="applyTemplate(templates.find(tm => tm.id === ${t.id}))">
+                    <div class="template-preview" style="background: linear-gradient(135deg, ${t.color}20, ${t.color}05);">
+                        <div style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                            <div style="height: 20px; background: ${t.color}; width: 70%; margin-bottom: 0.5rem; border-radius: 4px;"></div>
+                            <div style="height: 12px; background: #ccc; width: 50%; margin-bottom: 0.5rem; border-radius: 4px;"></div>
+                            <div style="height: 8px; background: #ddd; width: 80%; border-radius: 4px;"></div>
+                            <div style="margin-top: 1rem;"><span style="display: inline-block; width: 50px; height: 20px; background: ${t.color}40; border-radius: 20px;"></span></div>
+                        </div>
+                    </div>
+                    <div class="template-info"><h3 class="template-name">${t.name}</h3><div class="template-meta"><span>${t.category}</span><span>${t.desc}</span></div>
+                    <div class="template-actions"><button class="template-btn primary" onclick="event.stopPropagation(); applyTemplate(templates.find(tm => tm.id === ${t.id}))">Use Template</button></div></div>
+                </div>
+            `).join('');
+        }
+
+        async function downloadPDF() {
+            const btn = document.getElementById('downloadBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span style="display: inline-block; width: 20px; height: 20px; border: 2px solid white; border-top-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite;"></span> Generating...';
+            btn.disabled = true;
+            
+            try {
+                const resumeHTML = document.getElementById('resumePreview').innerHTML;
+                const fullHtml = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head><meta charset="UTF-8"><title>Resume - ${document.getElementById('fullName').value}</title>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                    <style>body { margin: 0; padding: 20px; background: white; font-family: ${currentFont}; } .resume-container { max-width: 800px; margin: 0 auto; }</style>
+                    </head>
+                    <body><div class="resume-container">${resumeHTML}</div></body>
+                    </html>
+                `;
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(fullHtml);
+                printWindow.document.close();
+                await new Promise(r => setTimeout(r, 500));
+                printWindow.print();
+                showToast('Resume ready for printing/saving as PDF!');
+            } catch(e) { showToast('Error generating PDF'); }
+            finally { btn.innerHTML = originalText; btn.disabled = false; }
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement('div'); toast.className = 'toast';
+            toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${msg}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        function setupEvents() {
+            ['fullName', 'jobTitle', 'email', 'phone', 'location', 'linkedin', 'summary', 'skills'].forEach(id => {
+                document.getElementById(id).addEventListener('input', () => renderResumePreview());
+            });
+            document.querySelectorAll('.color-option').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    document.querySelectorAll('.color-option').forEach(o => o.classList.remove('active'));
+                    opt.classList.add('active');
+                    currentAccentColor = opt.getAttribute('data-color');
+                    renderResumePreview();
+                });
+            });
+            document.querySelectorAll('.font-option').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    document.querySelectorAll('.font-option').forEach(o => o.classList.remove('active'));
+                    opt.classList.add('active');
+                    currentFont = opt.getAttribute('data-font');
+                    renderResumePreview();
+                });
+            });
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderTemplates();
+                });
+            });
+            document.getElementById('downloadBtn').addEventListener('click', downloadPDF);
+        }
+
+        initExperiences(); initEducations();
+        renderExperienceFields(); renderEducationFields();
+        renderTemplates(); renderResumePreview();
+        setupEvents();
+        document.querySelector('.color-option').classList.add('active');
+        document.querySelector('.font-option').classList.add('active');
+    </script>
+</body>
+</html>

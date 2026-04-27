@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>resume.studio · Sign In & Create Account</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Exact color palette from homepage */
+            --primary: #3A4D8C;
+            --primary-light: #5B6FAD;
+            --primary-soft: #E9EEFF;
+            --secondary: #4A8B7A;
+            --secondary-light: #E2F0EC;
+            --accent: #C47A5D;
+            --accent-light: #F7E6DE;
+            --bg: #F9F7F5;
+            --card: #FFFFFF;
+            --text: #2C3A4B;
+            --text-light: #5D6E7F;
+            --text-lighter: #8C9AA8;
+            --border: #E2E6EA;
+            --border-light: #EDF0F3;
+            --success: #4A8B7A;
+            --error: #e06c6c;
+            
+            --shadow-sm: 0 2px 8px rgba(58, 77, 140, 0.05);
+            --shadow-md: 0 4px 12px rgba(58, 77, 140, 0.08);
+            --shadow-lg: 0 8px 24px rgba(58, 77, 140, 0.12);
+            --shadow-xl: 0 20px 32px rgba(58, 77, 140, 0.15);
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, #f5f3f0 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        /* Main Container */
+        .auth-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Brand Header */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            transform: rotate(-5deg);
+            transition: var(--transition);
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(0deg);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.01em;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .brand-tagline {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Auth Card */
+        .auth-card {
+            background: var(--card);
+            border-radius: 2rem;
+            padding: 2rem 2rem 2rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            font-size: 0.95rem;
+            color: var(--text);
+            transition: var(--transition);
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-lighter);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.7rem;
+            margin-top: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .success-message {
+            background: var(--secondary-light);
+            border-left: 3px solid var(--secondary);
+            padding: 0.75rem 1rem;
+            border-radius: 0.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--secondary);
+            font-size: 0.85rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 0.9rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            color: var(--text);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-soft);
+            transform: translateY(-2px);
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .auth-switch a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--text-lighter);
+            font-size: 0.75rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        /* Dashboard Card */
+        .dashboard-card {
+            background: var(--card);
+            border-radius: 2rem;
+            padding: 2rem;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+
+        .dashboard-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-soft) 0%, var(--secondary-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-header h2 {
+            font-size: 1.75rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-header p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .user-info-card {
+            background: var(--bg);
+            padding: 1.25rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-light);
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row i {
+            width: 28px;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .info-row span:first-of-type {
+            font-weight: 500;
+            color: var(--text);
+            min-width: 70px;
+        }
+
+        .info-row span:last-child {
+            color: var(--text-light);
+            flex: 1;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .btn-resume {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 0.85rem;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-resume:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.85rem;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-soft);
+        }
+
+        /* Stats Badge */
+        .stats-badge {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-light);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-card, .dashboard-card {
+            animation: fadeInUp 0.5s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+            .auth-card, .dashboard-card {
+                padding: 1.5rem;
+            }
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            .logo-text {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container" id="appContainer">
+        <!-- Dynamic content will be rendered here -->
+    </div>
+
+    <script>
+        // ==================== DATA STORAGE ====================
+        let registeredUsers = [];
+        let currentUser = null;
+
+        // Load from localStorage if available
+        try {
+            const savedUsers = localStorage.getItem('resume_studio_users');
+            const savedCurrent = localStorage.getItem('resume_studio_current');
+            if (savedUsers) registeredUsers = JSON.parse(savedUsers);
+            if (savedCurrent) currentUser = JSON.parse(savedCurrent);
+        } catch(e) { console.warn(e); }
+
+        // Save to localStorage
+        function saveToStorage() {
+            localStorage.setItem('resume_studio_users', JSON.stringify(registeredUsers));
+            if (currentUser) {
+                localStorage.setItem('resume_studio_current', JSON.stringify(currentUser));
+            } else {
+                localStorage.removeItem('resume_studio_current');
+            }
+        }
+
+        // Helper validation functions
+        function isValidPhone(phone) {
+            return /^\d{10}$/.test(phone);
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(email);
+        }
+
+        function isValidPassword(pwd) {
+            return pwd && pwd.trim().length >= 4;
+        }
+
+        function isEmailTaken(email) {
+            return registeredUsers.some(u => u.gmail.toLowerCase() === email.toLowerCase());
+        }
+
+        // ==================== UI RENDER FUNCTIONS ====================
+        const appContainer = document.getElementById('appContainer');
+
+        // Render Sign In Page (default homepage)
+        function renderSignIn(errorMsg = null) {
+            appContainer.innerHTML = `
+                <div class="brand-header">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-pen-fancy"></i>
+                        </div>
+                        <span class="logo-text">resume.studio</span>
+                    </div>
+                    <div class="brand-tagline">AI-powered resume builder · ATS optimized</div>
+                </div>
+                <div class="auth-card">
+                    <div class="auth-header" style="text-align: center; margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Welcome back</h2>
+                        <p style="color: var(--text-light); font-size: 0.85rem;">Sign in to continue building your career</p>
+                    </div>
+                    ${errorMsg ? `<div class="success-message" style="background: #ffe6e6; border-left-color: var(--error); color: var(--error);"><i class="fas fa-exclamation-circle"></i> ${errorMsg}</div>` : ''}
+                    <form id="signinForm">
+                        <div class="form-group">
+                            <label>📧 Email Address</label>
+                            <input type="email" id="signinEmail" placeholder="your@email.com" autocomplete="email">
+                        </div>
+                        <div class="form-group">
+                            <label>🔒 Password</label>
+                            <input type="password" id="signinPassword" placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-arrow-right-to-bracket"></i> Sign In
+                        </button>
+                    </form>
+                    <div class="auth-switch">
+                        Don't have an account? <a id="switchToSignUp">Create free account →</a>
+                    </div>
+                    <div class="divider">
+                        <span>demo credentials</span>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; justify-content: center; font-size: 0.7rem; color: var(--text-lighter);">
+                        <span>demo@example.com</span>
+                        <span>•</span>
+                        <span>demo123</span>
+                    </div>
+                </div>
+            `;
+
+            // Event listeners
+            document.getElementById('signinForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('signinEmail').value.trim();
+                const password = document.getElementById('signinPassword').value;
+                
+                if (!email || !password) {
+                    renderSignIn('Please enter both email and password.');
+                    return;
+                }
+                
+                const user = registeredUsers.find(u => u.gmail.toLowerCase() === email.toLowerCase() && u.password === password);
+                if (user) {
+                    currentUser = user;
+                    saveToStorage();
+                    renderDashboard();
+                } else {
+                    renderSignIn('Invalid email or password. Please sign up first.');
+                }
+            });
+            
+            document.getElementById('switchToSignUp').addEventListener('click', () => renderSignUp());
+        }
+
+        // Render Sign Up Page (Name, Phone 10 digits, Gmail, Password)
+        function renderSignUp(errors = null) {
+            const nameErr = errors?.name || '';
+            const phoneErr = errors?.phone || '';
+            const emailErr = errors?.email || '';
+            const pwdErr = errors?.password || '';
+            
+            appContainer.innerHTML = `
+                <div class="brand-header">
+                    <div class="logo" style="cursor: pointer;" id="backToSignIn">
+                        <div class="logo-icon">
+                            <i class="fas fa-pen-fancy"></i>
+                        </div>
+                        <span class="logo-text">resume.studio</span>
+                    </div>
+                    <div class="brand-tagline">Join 50,000+ job seekers</div>
+                </div>
+                <div class="auth-card">
+                    <div class="auth-header" style="text-align: center; margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Create account</h2>
+                        <p style="color: var(--text-light); font-size: 0.85rem;">Start building your professional resume</p>
+                    </div>
+                    <form id="signupForm">
+                        <div class="form-group">
+                            <label>👤 Full Name</label>
+                            <input type="text" id="signupName" placeholder="Sarah Johnson" autocomplete="name">
+                            ${nameErr ? `<div class="error-message"><i class="fas fa-exclamation-circle"></i> ${nameErr}</div>` : ''}
+                        </div>
+                        <div class="form-group">
+                            <label>📞 Phone Number (10 digits only)</label>
+                            <input type="tel" id="signupPhone" placeholder="9876543210" maxlength="10" inputmode="numeric">
+                            ${phoneErr ? `<div class="error-message"><i class="fas fa-exclamation-circle"></i> ${phoneErr}</div>` : ''}
+                        </div>
+                        <div class="form-group">
+                            <label>📧 Email Address</label>
+                            <input type="email" id="signupEmail" placeholder="username@gmail.com">
+                            ${emailErr ? `<div class="error-message"><i class="fas fa-exclamation-circle"></i> ${emailErr}</div>` : ''}
+                        </div>
+                        <div class="form-group">
+                            <label>🔑 Password (min 4 characters)</label>
+                            <input type="password" id="signupPassword" placeholder="create a strong password">
+                            ${pwdErr ? `<div class="error-message"><i class="fas fa-exclamation-circle"></i> ${pwdErr}</div>` : ''}
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </button>
+                    </form>
+                    <div class="auth-switch">
+                        Already have an account? <a id="switchToSignIn">Sign in →</a>
+                    </div>
+                    <div class="divider">
+                        <span>free forever · no credit card</span>
+                    </div>
+                </div>
+            `;
+            
+            // Back to sign in via logo click
+            const backToSignIn = document.getElementById('backToSignIn');
+            if (backToSignIn) {
+                backToSignIn.addEventListener('click', () => renderSignIn());
+            }
+            
+            document.getElementById('switchToSignIn').addEventListener('click', () => renderSignIn());
+            
+            document.getElementById('signupForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('signupName').value.trim();
+                const phone = document.getElementById('signupPhone').value.trim();
+                const email = document.getElementById('signupEmail').value.trim();
+                const password = document.getElementById('signupPassword').value;
+                
+                let errors = {};
+                if (!name) errors.name = 'Full name is required';
+                if (!phone) errors.phone = 'Phone number required';
+                else if (!isValidPhone(phone)) errors.phone = 'Phone must be exactly 10 digits (numbers only)';
+                if (!email) errors.email = 'Email address required';
+                else if (!isValidEmail(email)) errors.email = 'Enter a valid email address';
+                else if (isEmailTaken(email)) errors.email = 'This email is already registered. Sign in instead.';
+                if (!password) errors.password = 'Password required';
+                else if (!isValidPassword(password)) errors.password = 'Password must be at least 4 characters';
+                
+                if (Object.keys(errors).length > 0) {
+                    renderSignUp(errors);
+                    return;
+                }
+                
+                // Create new user
+                const newUser = {
+                    name: name,
+                    phone: phone,
+                    gmail: email,
+                    password: password,
+                    joinedAt: new Date().toISOString()
+                };
+                registeredUsers.push(newUser);
+                currentUser = newUser;
+                saveToStorage();
+                renderDashboard();
+            });
+        }
+
+        // Function to navigate to homepage
+        function navigateToHomepage() {
+            // Redirect to the main homepage (getstarted2.html)
+            window.location.href = 'resumebuilder2.html';
+        }
+
+        // Render Dashboard after successful login/signup
+        function renderDashboard() {
+            if (!currentUser) {
+                renderSignIn();
+                return;
+            }
+            
+            appContainer.innerHTML = `
+                <div class="brand-header">
+                    <div class="logo" style="cursor: pointer;" id="logoToSignIn">
+                        <div class="logo-icon">
+                            <i class="fas fa-pen-fancy"></i>
+                        </div>
+                        <span class="logo-text">resume.studio</span>
+                    </div>
+                    <div class="brand-tagline">Your career journey starts here</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="dashboard-header">
+                        <h2>Welcome, ${escapeHtml(currentUser.name.split(' ')[0])}! 👋</h2>
+                        <p>Your resume studio account is ready</p>
+                    </div>
+                    
+                    <div class="user-info-card">
+                        <div class="info-row">
+                            <i class="fas fa-user"></i>
+                            <span>Name</span>
+                            <span>${escapeHtml(currentUser.name)}</span>
+                        </div>
+                        <div class="info-row">
+                            <i class="fas fa-phone"></i>
+                            <span>Phone</span>
+                            <span>${escapeHtml(currentUser.phone)}</span>
+                        </div>
+                        <div class="info-row">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email</span>
+                            <span>${escapeHtml(currentUser.gmail)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="createResumeBtn" class="btn-resume">
+                            <i class="fas fa-pen-fancy"></i> Start Building
+                        </button>
+                        <button id="signOutBtn" class="btn-outline">
+                            <i class="fas fa-sign-out-alt"></i> Sign Out
+                        </button>
+                    </div>
+                    
+                    <div class="stats-badge">
+                        <div class="stat-item">
+                            <div class="stat-number">50K+</div>
+                            <div class="stat-label">Users</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">92%</div>
+                            <div class="stat-label">Success Rate</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">ATS</div>
+                            <div class="stat-label">Optimized</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Logo click goes to sign in (clear session)
+            const logoToSignIn = document.getElementById('logoToSignIn');
+            if (logoToSignIn) {
+                logoToSignIn.addEventListener('click', () => {
+                    currentUser = null;
+                    saveToStorage();
+                    renderSignIn();
+                });
+            }
+            
+            // Start Building button - navigates to homepage
+            const createResumeBtn = document.getElementById('createResumeBtn');
+            if (createResumeBtn) {
+                createResumeBtn.addEventListener('click', () => {
+                    navigateToHomepage();
+                });
+            }
+            
+            // Sign Out button
+            const signOutBtn = document.getElementById('signOutBtn');
+            if (signOutBtn) {
+                signOutBtn.addEventListener('click', () => {
+                    currentUser = null;
+                    saveToStorage();
+                    renderSignIn();
+                });
+            }
+        }
+        
+        // Helper to escape HTML
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        // Demo user preload if no users exist
+        function preloadDemoUser() {
+            if (registeredUsers.length === 0) {
+                registeredUsers.push({
+                    name: "Demo User",
+                    phone: "1234567890",
+                    gmail: "demo@example.com",
+                    password: "demo123",
+                    joinedAt: new Date().toISOString()
+                });
+                saveToStorage();
+            }
+        }
+        
+        // Initialize: if user is already logged in, show dashboard; otherwise show sign in
+        function init() {
+            preloadDemoUser();
+            if (currentUser) {
+                renderDashboard();
+            } else {
+                renderSignIn();
+            }
+        }
+        
+        init();
+    </script>
+</body>
+</html>

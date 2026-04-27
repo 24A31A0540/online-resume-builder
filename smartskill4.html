@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Skill Analysis · resume.studio (14+ roles)</title>
+    <!-- Fonts & Icons (matching homepage) -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #3A4D8C; --primary-light: #5B6FAD; --primary-soft: #E9EEFF;
+            --secondary: #4A8B7A; --secondary-light: #E2F0EC; --accent: #C47A5D;
+            --accent-light: #F7E6DE; --bg: #F9F7F5; --card: #FFFFFF;
+            --text: #2C3A4B; --text-light: #5D6E7F; --text-lighter: #8C9AA8;
+            --border: #E2E6EA; --border-light: #EDF0F3; --success: #4A8B7A;
+            --warning: #C47A5D; --shadow-sm: 0 2px 8px rgba(58, 77, 140, 0.05);
+            --shadow-md: 0 4px 12px rgba(58, 77, 140, 0.08);
+            --shadow-lg: 0 8px 24px rgba(58, 77, 140, 0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body {
+            font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+            line-height: 1.6; min-height: 100vh; display: flex; align-items: center;
+            justify-content: center; padding: 2rem 1rem;
+        }
+        .container { max-width: 1280px; width: 100%; margin: 0 auto; }
+        h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; letter-spacing: -0.02em; }
+
+        .analysis-card {
+            background: var(--card); border-radius: 30px; box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light); overflow: hidden; position: relative;
+        }
+        .analysis-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+        .card-header { padding: 2rem 2rem 1.5rem; }
+        .badge {
+            display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;
+            background: var(--secondary-light); border-radius: 40px; color: var(--secondary);
+            font-size: 0.85rem; font-weight: 500; margin-bottom: 1rem;
+        }
+        .header-title { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+        .header-title h2 { font-size: 2rem; color: var(--text); }
+        .header-title span { color: var(--primary); position: relative; display: inline-block; }
+        .header-title span::after {
+            content: ''; position: absolute; bottom: 0.1rem; left: 0; width: 100%; height: 0.4rem;
+            background: linear-gradient(90deg, var(--primary-soft), var(--secondary-light)); z-index: -1; border-radius: 30px;
+        }
+        .subhead { color: var(--text-light); font-size: 1rem; margin-bottom: 2rem; }
+
+        /* role selector chips (real-time) */
+        .role-selector {
+            display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.5rem 0 1rem;
+            padding: 0.5rem 0; align-items: center;
+        }
+        .selector-label {
+            font-weight: 600; color: var(--text); margin-right: 0.5rem; font-size: 0.95rem;
+        }
+        .role-chip {
+            padding: 0.6rem 1.2rem; background: var(--bg); border: 1px solid var(--border);
+            border-radius: 40px; font-size: 0.85rem; font-weight: 500; color: var(--text-light);
+            cursor: pointer; transition: var(--transition); box-shadow: var(--shadow-sm);
+        }
+        .role-chip i { margin-right: 0.3rem; color: var(--primary-light); }
+        .role-chip:hover { border-color: var(--primary); background: var(--primary-soft); transform: translateY(-2px); }
+        .role-chip.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-color: transparent; color: white;
+        }
+        .role-chip.active i { color: white; }
+
+        .input-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+        }
+        @media (max-width: 700px) { .input-grid { grid-template-columns: 1fr; } }
+
+        .dropzone {
+            background: var(--bg); border: 2px dashed var(--border); border-radius: 24px;
+            padding: 2rem 1rem; text-align: center; transition: var(--transition); cursor: pointer;
+        }
+        .dropzone:hover, .dropzone.dragover { border-color: var(--primary); background: var(--primary-soft); transform: scale(1.01); }
+        .dropzone i { font-size: 2.2rem; color: var(--primary); margin-bottom: 0.75rem; }
+        .dropzone p { color: var(--text-light); font-size: 0.95rem; }
+        .dropzone small { color: var(--text-lighter); font-size: 0.8rem; }
+        .file-name { margin-top: 0.5rem; font-weight: 500; color: var(--primary); background: var(--primary-soft); padding: 0.3rem 1rem; border-radius: 40px; display: inline-block; font-size: 0.9rem; }
+
+        .role-input { background: var(--bg); border-radius: 24px; padding: 1.5rem 1.25rem; }
+        .role-label { display: flex; align-items: center; gap: 0.5rem; color: var(--text-light); font-weight: 500; margin-bottom: 0.75rem; }
+        .role-label i { color: var(--primary); }
+        .input-field {
+            width: 100%; padding: 1rem 1.2rem; background: var(--card); border: 1px solid var(--border);
+            border-radius: 60px; font-size: 1rem; color: var(--text); transition: var(--transition);
+        }
+        .input-field:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-soft); }
+        .jd-upload { margin-top: 1rem; display: flex; align-items: center; gap: 0.75rem; color: var(--text-lighter); font-size: 0.9rem; }
+        .jd-upload label { cursor: pointer; color: var(--primary); font-weight: 500; border-bottom: 1px dashed var(--primary-light); }
+
+        .analysis-results { padding: 2rem; background: var(--bg); border-top: 1px solid var(--border-light); }
+        .match-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2rem; }
+        .score-circle {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white; border-radius: 40px; padding: 1rem 2rem; font-size: 1.8rem;
+            font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; box-shadow: var(--shadow-md);
+            display: inline-flex; align-items: center; gap: 1rem;
+        }
+        .legend { display: flex; gap: 2rem; color: var(--text-light); }
+        .legend-item { display: flex; align-items: center; gap: 0.5rem; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot.matched { background: var(--success); }
+        .dot.missing { background: var(--warning); }
+        .dot.weak { background: #F59E0B; }
+
+        .skill-section { margin-bottom: 2rem; }
+        .skill-section h3 { font-size: 1.1rem; color: var(--text); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .skill-chip {
+            padding: 0.6rem 1.2rem; border-radius: 40px; font-size: 0.9rem; font-weight: 500;
+            background: var(--card); border: 1px solid var(--border); color: var(--text);
+            transition: var(--transition); box-shadow: var(--shadow-sm);
+        }
+        .skill-chip i { margin-right: 0.3rem; }
+        .skill-chip.matched { background: var(--secondary-light); border-color: var(--secondary); color: #1E4A3D; }
+        .skill-chip.matched i { color: var(--secondary); }
+        .skill-chip.missing { background: var(--accent-light); border-color: var(--accent); color: #7B4D3A; }
+        .skill-chip.missing i { color: var(--accent); }
+        .skill-chip.weak { background: #FEF3C7; border-color: #F59E0B; color: #92400E; }
+        .skill-chip.weak i { color: #F59E0B; }
+
+        .rec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin: 1.5rem 0 0.5rem; }
+        .rec-card {
+            background: var(--card); border-radius: 24px; padding: 1.25rem;
+            border: 1px solid var(--border-light); transition: var(--transition); box-shadow: var(--shadow-sm);
+        }
+        .rec-card:hover { transform: translateY(-4px); border-color: var(--primary-soft); box-shadow: var(--shadow-md); }
+        .rec-icon { width: 40px; height: 40px; background: var(--primary-soft); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--primary); margin-bottom: 0.75rem; }
+        .rec-title { font-weight: 600; margin-bottom: 0.25rem; }
+        .rec-desc { font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.75rem; }
+        .rec-action { display: flex; align-items: center; justify-content: space-between; }
+        .learn-link { color: var(--primary); font-weight: 500; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; }
+        .badge-priority { background: var(--accent-light); color: var(--accent); font-size: 0.7rem; padding: 0.25rem 0.75rem; border-radius: 40px; font-weight: 600; }
+        .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-lighter); }
+        .hidden { display: none !important; }
+        .footer-note { text-align: center; padding: 1.5rem 2rem 0; color: var(--text-lighter); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="analysis-card">
+        <div class="card-header">
+            <div class="badge"><i class="fas fa-robot"></i> AI-Powered Skill Analysis</div>
+            <div class="header-title">
+                <h2>Smart Skill <span>Analysis</span></h2>
+                <div style="background:var(--primary-soft); padding:0.5rem 1.2rem; border-radius:40px; color:var(--primary); font-weight:500;">
+                    <i class="fas fa-bullseye"></i> 14+ target roles
+                </div>
+            </div>
+            <p class="subhead">Identify skill gaps and get recommendations for your target role.</p>
+
+            <!-- Role chips (14+ roles) – click to select instantly -->
+            <div class="role-selector">
+                <span class="selector-label"><i class="fas fa-list"></i> Quick pick:</span>
+                <span class="role-chip active" data-role="frontend"><i class="fas fa-code"></i> Frontend</span>
+                <span class="role-chip" data-role="backend"><i class="fas fa-server"></i> Backend</span>
+                <span class="role-chip" data-role="fullstack"><i class="fas fa-layer-group"></i> Full Stack</span>
+                <span class="role-chip" data-role="data-scientist"><i class="fas fa-chart-line"></i> Data Scientist</span>
+                <span class="role-chip" data-role="data-analyst"><i class="fas fa-chart-bar"></i> Data Analyst</span>
+                <span class="role-chip" data-role="devops"><i class="fas fa-cloud"></i> DevOps</span>
+                <span class="role-chip" data-role="sre"><i class="fas fa-gear"></i> SRE</span>
+                <span class="role-chip" data-role="product-manager"><i class="fas fa-rocket"></i> Product Manager</span>
+                <span class="role-chip" data-role="ux-designer"><i class="fas fa-paint-brush"></i> UX Designer</span>
+                <span class="role-chip" data-role="ui-designer"><i class="fas fa-pen-fancy"></i> UI Designer</span>
+                <span class="role-chip" data-role="qa"><i class="fas fa-bug"></i> QA Engineer</span>
+                <span class="role-chip" data-role="mobile-dev"><i class="fas fa-mobile-alt"></i> Mobile Dev</span>
+                <span class="role-chip" data-role="security"><i class="fas fa-shield-hal"></i> Security</span>
+                <span class="role-chip" data-role="ml-engineer"><i class="fas fa-brain"></i> ML Engineer</span>
+                <span class="role-chip" data-role="marketing"><i class="fas fa-megaphone"></i> Marketing</span>
+            </div>
+
+            <div class="input-grid">
+                <div class="dropzone" id="dropzone">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag & drop resume (PDF, DOCX, TXT) or <strong style="color:var(--primary);">browse</strong></p>
+                    <small id="fileDisplay">No file chosen</small>
+                    <input type="file" id="resumeUpload" accept=".pdf,.docx,.txt" style="display:none;">
+                </div>
+                <div class="role-input">
+                    <div class="role-label"><i class="fas fa-magnifying-glass"></i> Or type custom role</div>
+                    <input type="text" class="input-field" id="targetRole" placeholder="e.g. Frontend Developer, Data Analyst" value="Frontend Developer">
+                    <div class="jd-upload">
+                        <i class="fas fa-paperclip"></i>
+                        <span>or <label for="jdUpload">upload job description</label></span>
+                        <input type="file" id="jdUpload" accept=".txt,.pdf,.docx" style="display:none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-results" id="analysisResults">
+            <div id="resultPanel" class="hidden">
+                <div class="match-header">
+                    <div class="score-circle" id="matchScore"><i class="fas fa-chart-pie"></i> 0%</div>
+                    <div class="legend">
+                        <span class="legend-item"><span class="dot matched"></span> matched</span>
+                        <span class="legend-item"><span class="dot missing"></span> missing</span>
+                        <span class="legend-item"><span class="dot weak"></span> weak</span>
+                    </div>
+                </div>
+                <div class="skill-section"><h3><i class="fas fa-check-circle" style="color:var(--success);"></i> Matched skills</h3><div class="skill-tags" id="matchedSkills"></div></div>
+                <div class="skill-section"><h3><i class="fas fa-exclamation-triangle" style="color:var(--warning);"></i> Missing skills (gaps)</h3><div class="skill-tags" id="missingSkills"></div></div>
+                <div class="skill-section"><h3><i class="fas fa-clock" style="color:#F59E0B;"></i> Weak / needs improvement</h3><div class="skill-tags" id="weakSkills"></div></div>
+                <div class="skill-section"><h3><i class="fas fa-lightbulb" style="color:var(--primary);"></i> Recommendations for you</h3><div class="rec-grid" id="recList"></div></div>
+            </div>
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-arrow-up-from-bracket" style="font-size:3rem; color:var(--border);"></i>
+                <h3 style="margin-top:1rem;">Upload your resume</h3>
+                <p style="color:var(--text-light);">Then pick a role above or type one – real‑time analysis.</p>
+            </div>
+        </div>
+        <div class="footer-note"><i class="fas fa-bolt"></i> 14+ roles · real‑time · dynamic extraction</div>
+    </div>
+</div>
+
+<!-- External parsing libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+<script>
+    (function() {
+        // DOM
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('resumeUpload');
+        const fileDisplay = document.getElementById('fileDisplay');
+        const targetRole = document.getElementById('targetRole');
+        const jdUpload = document.getElementById('jdUpload');
+        const emptyState = document.getElementById('emptyState');
+        const resultPanel = document.getElementById('resultPanel');
+        const matchScore = document.getElementById('matchScore');
+        const matchedDiv = document.getElementById('matchedSkills');
+        const missingDiv = document.getElementById('missingSkills');
+        const weakDiv = document.getElementById('weakSkills');
+        const recList = document.getElementById('recList');
+        const roleChips = document.querySelectorAll('.role-chip');
+
+        // ---------- Comprehensive skill database ----------
+        const SKILLS_DB = [
+            "javascript","typescript","python","java","c#","c++","php","ruby","swift","kotlin",
+            "go","rust","html","css","react","angular","vue","svelte","node.js","express",
+            "django","flask","spring","laravel","rails","sql","mysql","postgresql","mongodb",
+            "redis","graphql","aws","azure","gcp","docker","kubernetes","jenkins","git",
+            "github","gitlab","ci/cd","terraform","ansible","linux","bash","powershell",
+            "excel","tableau","power bi","pandas","numpy","r","machine learning","deep learning",
+            "tensorflow","pytorch","nlp","data analysis","data visualization","statistics",
+            "agile","scrum","jira","confluence","figma","sketch","adobe xd","photoshop",
+            "illustrator","ui design","ux research","wireframing","prototyping","user testing",
+            "rest api","oauth","jwt","firebase","heroku","netlify","vercel","testing",
+            "jest","mocha","cypress","selenium","unit testing","e2e","cucumber","product management",
+            "roadmapping","stakeholder management","market research","communication","teamwork",
+            "problem solving","critical thinking","leadership","security","network","penetration testing",
+            "firewall","encryption","mobile development","android","ios","flutter","react native",
+            "kotlin","swift","sre","monitoring","prometheus","grafana","elk","splunk"
+        ];
+
+        // ---------- 14+ roles skill mapping (dynamic, not hardcoded per chip) ----------
+        function getRequiredSkillsForRole(role) {
+            const r = role.toLowerCase().trim();
+            if (r.includes('frontend') || r.includes('front-end') || r.includes('ui developer') || r.includes('front end')) {
+                return ['html','css','javascript','react','typescript','git','webpack','jest','responsive design'];
+            }
+            if (r.includes('backend') || r.includes('back-end') || r.includes('back end')) {
+                return ['python','java','node.js','sql','rest api','docker','git','linux','mongodb','aws'];
+            }
+            if (r.includes('full stack') || r.includes('fullstack')) {
+                return ['javascript','react','node.js','python','sql','git','docker','html','css','aws'];
+            }
+            if (r.includes('data scientist') || (r.includes('data') && r.includes('scientist'))) {
+                return ['python','sql','pandas','numpy','r','machine learning','statistics','tensorflow','data visualization','scikit-learn'];
+            }
+            if (r.includes('data analyst') || (r.includes('data') && r.includes('analyst'))) {
+                return ['python','sql','excel','tableau','pandas','statistics','data visualization','r','power bi','communication'];
+            }
+            if (r.includes('devops')) {
+                return ['linux','docker','kubernetes','jenkins','aws','terraform','git','python','bash','ci/cd','ansible','prometheus'];
+            }
+            if (r.includes('sre') || r.includes('site reliability')) {
+                return ['linux','kubernetes','python','bash','monitoring','prometheus','grafana','aws','ci/cd','incident management','slo','sla'];
+            }
+            if (r.includes('product manager') || (r.includes('product') && r.includes('manager'))) {
+                return ['agile','scrum','jira','confluence','product strategy','user research','roadmapping','stakeholder management','market research','wireframing','analytics'];
+            }
+            if (r.includes('ux designer') || (r.includes('ux') && r.includes('design'))) {
+                return ['figma','sketch','adobe xd','wireframing','prototyping','user research','usability testing','interaction design','information architecture','html','css'];
+            }
+            if (r.includes('ui designer') || (r.includes('ui') && r.includes('design'))) {
+                return ['figma','sketch','adobe xd','photoshop','illustrator','visual design','color theory','typography','responsive design','html','css'];
+            }
+            if (r.includes('qa') || r.includes('test') || r.includes('quality assurance')) {
+                return ['manual testing','automation testing','selenium','cypress','jest','jira','bug tracking','api testing','sql','agile','test plans'];
+            }
+            if (r.includes('mobile') || r.includes('android') || r.includes('ios') || r.includes('react native') || r.includes('flutter')) {
+                return ['swift','kotlin','java','react native','flutter','android studio','xcode','rest api','git','mobile ui','firebase'];
+            }
+            if (r.includes('security') || r.includes('cybersecurity') || r.includes('infosec')) {
+                return ['network security','firewall','encryption','penetration testing','vulnerability assessment','siem','incident response','risk management','compliance','linux'];
+            }
+            if (r.includes('ml engineer') || r.includes('machine learning engineer')) {
+                return ['python','machine learning','deep learning','tensorflow','pytorch','sql','data pipelines','aws','docker','kubernetes','mlops'];
+            }
+            if (r.includes('marketing') || r.includes('digital marketing') || r.includes('growth')) {
+                return ['seo','sem','content marketing','social media','email marketing','google analytics','data analysis','crm','hubspot','communication'];
+            }
+            // default fallback
+            return ['javascript','python','sql','git','communication','problem solving','teamwork','time management','critical thinking'];
+        }
+
+        // Extract text from file (real)
+        async function extractTextFromFile(file) {
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (ext === 'txt') return await file.text();
+            if (ext === 'pdf') {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                let fullText = '';
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const content = await page.getTextContent();
+                    fullText += content.items.map(item => item.str).join(' ') + '\n';
+                }
+                return fullText;
+            }
+            if (ext === 'docx') {
+                const arrayBuffer = await file.arrayBuffer();
+                const result = await mammoth.extractRawText({ arrayBuffer });
+                return result.value;
+            }
+            throw new Error('unsupported');
+        }
+
+        // Extract skills from text
+        function extractSkillsFromText(text) {
+            const lower = text.toLowerCase();
+            const found = new Set();
+            SKILLS_DB.forEach(skill => {
+                const regex = new RegExp('\\b' + skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+                if (regex.test(lower)) found.add(skill);
+            });
+            return Array.from(found);
+        }
+
+        // Analyze
+        function analyzeSkills(userSkills, requiredSkills) {
+            const userSet = new Set(userSkills.map(s => s.toLowerCase()));
+            const matched = [], missing = [], weak = [];
+            requiredSkills.forEach(skill => {
+                const lower = skill.toLowerCase();
+                if (userSet.has(lower)) matched.push(skill);
+                else {
+                    const partial = userSkills.some(us => us.includes(lower) || lower.includes(us));
+                    if (partial) weak.push(skill);
+                    else missing.push(skill);
+                }
+            });
+            const percent = requiredSkills.length ? Math.round((matched.length / requiredSkills.length) * 100) : 0;
+            return { matched, missing, weak, percent };
+        }
+
+        // Recommendations
+        function generateRecommendations(matched, missing, weak) {
+            const gaps = [...missing, ...weak];
+            if (gaps.length === 0) return [{ skill: 'all good', tip: 'You match all required skills!', resource: 'keep learning', icon: 'fa-star' }];
+            return gaps.slice(0, 5).map(skill => {
+                const s = skill.toLowerCase();
+                if (s.includes('react') || s.includes('vue') || s.includes('angular')) return { skill, tip: `Build a project with ${skill} to strengthen your portfolio.`, resource: `${skill} tutorial`, icon: 'fa-code' };
+                if (s.includes('python')) return { skill, tip: 'Practice data analysis or automation with Python.', resource: 'Python crash course', icon: 'fa-python' };
+                if (s.includes('sql')) return { skill, tip: 'Master joins and window functions via online exercises.', resource: 'SQL practice', icon: 'fa-database' };
+                if (s.includes('aws') || s.includes('azure') || s.includes('gcp')) return { skill, tip: `Get hands-on with ${skill} free tier.`, resource: `${skill} fundamentals`, icon: 'fa-cloud' };
+                if (s.includes('docker') || s.includes('kubernetes')) return { skill, tip: `Containerize an app with ${skill}.`, resource: `${skill} workshop`, icon: 'fa-ship' };
+                if (s.includes('figma') || s.includes('sketch')) return { skill, tip: `Create a UI project using ${skill}.`, resource: `Learn ${skill}`, icon: 'fa-paint-brush' };
+                if (s.includes('agile') || s.includes('scrum')) return { skill, tip: `Get certified in ${skill} (PSM I or equivalent).`, resource: `Scrum guide`, icon: 'fa-diagram-project' };
+                return { skill, tip: `Add ${skill} to your resume with a mini-project.`, resource: `Learn ${skill}`, icon: 'fa-graduation-cap' };
+            });
+        }
+
+        // UI update
+        let currentUserSkills = [];
+
+        async function handleFileUpload(file) {
+            if (!file) return;
+            fileDisplay.innerText = `📄 ${file.name}`;
+            try {
+                const text = await extractTextFromFile(file);
+                currentUserSkills = extractSkillsFromText(text);
+                runAnalysis();
+            } catch (e) {
+                fileDisplay.innerText = '⚠️ error parsing';
+                console.error(e);
+            }
+        }
+
+        function runAnalysis() {
+            const role = targetRole.value.trim() || 'Frontend Developer';
+            const required = getRequiredSkillsForRole(role);
+            const { matched, missing, weak, percent } = analyzeSkills(currentUserSkills, required);
+
+            matchScore.innerHTML = `<i class="fas fa-chart-pie"></i> ${percent}%`;
+            renderChips(matchedDiv, matched, 'matched');
+            renderChips(missingDiv, missing, 'missing');
+            renderChips(weakDiv, weak, 'weak');
+
+            const recs = generateRecommendations(matched, missing, weak);
+            renderRecs(recs);
+
+            emptyState.classList.add('hidden');
+            resultPanel.classList.remove('hidden');
+        }
+
+        function renderChips(container, skills, type) {
+            if (!skills.length) { container.innerHTML = `<span style="color:var(--text-lighter);">—</span>`; return; }
+            let html = '';
+            skills.forEach(s => {
+                let icon = type === 'matched' ? 'fa-check' : (type === 'missing' ? 'fa-exclamation' : 'fa-clock');
+                html += `<span class="skill-chip ${type}"><i class="fas ${icon}"></i> ${s}</span>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderRecs(recs) {
+            if (!recs.length || recs[0].skill === 'all good') {
+                recList.innerHTML = '<div class="empty-state" style="padding:1rem;">✨ No skill gaps – you\'re ready!</div>';
+                return;
+            }
+            let html = '';
+            recs.forEach(r => {
+                html += `<div class="rec-card"><div class="rec-icon"><i class="fas ${r.icon}"></i></div><div class="rec-title">${r.skill}</div><div class="rec-desc">${r.tip}</div><div class="rec-action"><a href="#" class="learn-link"><i class="fas fa-arrow-up-right-from-square"></i> ${r.resource}</a><span class="badge-priority">gap</span></div></div>`;
+            });
+            recList.innerHTML = html;
+        }
+
+        // Event listeners
+        dropzone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => { if (e.target.files.length) handleFileUpload(e.target.files[0]); });
+
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault(); dropzone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleFileUpload(e.dataTransfer.files[0]);
+            }
+        });
+
+        targetRole.addEventListener('input', () => {
+            // sync active chip? we just update role
+            if (currentUserSkills.length) runAnalysis();
+            else if (fileInput.files.length) runAnalysis(); // fallback
+        });
+
+        jdUpload.addEventListener('change', async (e) => {
+            if (e.target.files.length) {
+                try {
+                    const text = await extractTextFromFile(e.target.files[0]);
+                    const extracted = extractSkillsFromText(text);
+                    if (extracted.length) {
+                        const role = 'custom role (from JD)';
+                        targetRole.value = 'Custom (JD)';
+                        const { matched, missing, weak, percent } = analyzeSkills(currentUserSkills, extracted);
+                        matchScore.innerHTML = `<i class="fas fa-chart-pie"></i> ${percent}%`;
+                        renderChips(matchedDiv, matched, 'matched');
+                        renderChips(missingDiv, missing, 'missing');
+                        renderChips(weakDiv, weak, 'weak');
+                        const recs = generateRecommendations(matched, missing, weak);
+                        renderRecs(recs);
+                        emptyState.classList.add('hidden');
+                        resultPanel.classList.remove('hidden');
+                    }
+                } catch (err) { console.error(err); }
+            }
+        });
+
+        // Chip clicks
+        roleChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                roleChips.forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                const roleKey = chip.dataset.role;
+                let displayRole = '';
+                if (roleKey === 'frontend') displayRole = 'Frontend Developer';
+                else if (roleKey === 'backend') displayRole = 'Backend Developer';
+                else if (roleKey === 'fullstack') displayRole = 'Full Stack Developer';
+                else if (roleKey === 'data-scientist') displayRole = 'Data Scientist';
+                else if (roleKey === 'data-analyst') displayRole = 'Data Analyst';
+                else if (roleKey === 'devops') displayRole = 'DevOps Engineer';
+                else if (roleKey === 'sre') displayRole = 'Site Reliability Engineer';
+                else if (roleKey === 'product-manager') displayRole = 'Product Manager';
+                else if (roleKey === 'ux-designer') displayRole = 'UX Designer';
+                else if (roleKey === 'ui-designer') displayRole = 'UI Designer';
+                else if (roleKey === 'qa') displayRole = 'QA Engineer';
+                else if (roleKey === 'mobile-dev') displayRole = 'Mobile Developer';
+                else if (roleKey === 'security') displayRole = 'Security Engineer';
+                else if (roleKey === 'ml-engineer') displayRole = 'ML Engineer';
+                else if (roleKey === 'marketing') displayRole = 'Marketing Specialist';
+                else displayRole = roleKey;
+                targetRole.value = displayRole;
+                if (currentUserSkills.length || fileInput.files.length) runAnalysis();
+            });
+        });
+
+        // initial
+        emptyState.classList.remove('hidden');
+        resultPanel.classList.add('hidden');
+    })();
+</script>
+</body>
+</html>
